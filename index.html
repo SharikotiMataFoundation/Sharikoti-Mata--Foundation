@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SHARIKOTI MATA FOUNDATION</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f6f4;
+  color: #222;
+}
+
+header {
+  background: #14532d;
+  color: white;
+  padding: 25px 12px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 25px;
+  margin: 5px;
+}
+
+nav {
+  background: #166534;
+  padding: 12px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px;
+  display: inline-block;
+}
+
+section {
+  background: white;
+  padding: 20px;
+  margin: 15px auto;
+  max-width: 850px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #ddd;
+}
+
+h2 {
+  color: #166534;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 11px;
+  margin-top: 5px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+
+button {
+  background: #166534;
+  color: white;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 5px;
+  margin: 12px 5px 0 0;
+  cursor: pointer;
+}
+
+.document {
+  border: 3px double #166534;
+  padding: 25px;
+  margin-top: 20px;
+  text-align: center;
+  background: white;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  background: #14532d;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 25px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #output, #output * {
+    visibility: visible;
+  }
+
+  #output {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SHARIKOTI MATA FOUNDATION</h1>
+  <p>Social Service | Cow Protection | Rural Development</p>
+  <p>समाज सेवा • गौवंश संरक्षण • ग्रामीण विकास</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#about">About Us</a>
+  <a href="#services">Services</a>
+  <a href="#certificates">Certificates</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<section id="home">
+  <h2>Welcome to Our Foundation</h2>
+
+  <p>
+    SHARIKOTI MATA FOUNDATION is a non-profit
+    organization working for social welfare,
+    animal welfare, cow protection and rural development.
+  </p>
+
+  <p>
+    शारिकोटी माता फाउंडेशन समाज सेवा, गौवंश संरक्षण,
+    पशु कल्याण और ग्रामीण विकास के लिए कार्यरत संस्था है।
+  </p>
+</section>
+
+<section id="about">
+  <h2>About Our Foundation</h2>
+
+  <p><b>Organization:</b> SHARIKOTI MATA FOUNDATION</p>
+
+  <p><b>Registration No.:</b>
+  U85300HP2021NPL008323</p>
+
+  <p><b>Established:</b> 23 January 2021</p>
+
+  <p><b>Registered Office:</b>
+  Mashnoo, Tehsil Rampur, District Shimla,
+  Himachal Pradesh - 172102</p>
+</section>
+
+<section id="services">
+  <h2>Our Activities</h2>
+
+  <ul>
+    <li>Social Welfare and Community Development</li>
+    <li>Cow Protection and Animal Welfare</li>
+    <li>Rural Development</li>
+    <li>Medicinal Plant Conservation</li>
+    <li>Education and Skill Development</li>
+    <li>Environmental Protection</li>
+  </ul>
+</section>
+
+<section id="certificates" class="no-print">
+  <h2>Employee Document Generator</h2>
+
+  <p>
+    कर्मचारी का विवरण भरकर दस्तावेज तैयार करें।
+  </p>
+
+  <label>Employee Full Name</label>
+  <input id="empName" placeholder="Enter full name">
+
+  <label>Employee ID</label>
+  <input id="empId" placeholder="Example: SMF-001">
+
+  <label>Designation</label>
+  <input id="designation" placeholder="Enter designation">
+
+  <label>Department</label>
+  <input id="department" placeholder="Enter department">
+
+  <label>Joining Date</label>
+  <input id="joiningDate" type="date">
+
+  <label>Issue Date</label>
+  <input id="issueDate" type="date">
+
+  <label>Authorized Signatory</label>
+  <input id="signatory" placeholder="Authorized person's name">
+
+  <label>Select Document</label>
+  <select id="docType">
+    <option value="id">Employee ID Card</option>
+    <option value="appointment">Appointment Certificate</option>
+    <option value="termination">Termination Certificate</option>
+  </select>
+
+  <button onclick="generateDocument()">
+    Generate Document
+  </button>
+
+  <button onclick="window.print()">
+    Print / Save as PDF
+  </button>
+</section>
+
+<section id="output" class="document" style="display:none">
+  <div id="documentContent"></div>
+</section>
+
+<section id="contact">
+  <h2>Contact Us</h2>
+
+  <p>
+    <b>SHARIKOTI MATA FOUNDATION</b>
+  </p>
+
+  <p>
+    Mashnoo, Tehsil Rampur, District Shimla,
+    Himachal Pradesh - 172102
+  </p>
+
+  <p>
+    Email:
+    <a href="mailto:sharikotimatafoundation@gmail.com">
+      sharikotimatafoundation@gmail.com
+    </a>
+  </p>
+
+  <p>
+    Website:
+    sharikotimatafoundation.org.in
+  </p>
+</section>
+
+<footer>
+  <p>© 2026 SHARIKOTI MATA FOUNDATION</p>
+  <p>Serving Society with Dedication</p>
+</footer>
+
+<script>
+function generateDocument() {
+  const name = document.getElementById("empName").value.trim();
+  const id = document.getElementById("empId").value.trim();
+  const designation = document.getElementById("designation").value.trim();
+  const department = document.getElementById("department").value.trim();
+  const joiningDate = document.getElementById("joiningDate").value;
+  const issueDate = document.getElementById("issueDate").value;
+  const signatory = document.getElementById("signatory").value.trim();
+  const type = document.getElementById("docType").value;
+
+  if (!name || !designation || !id) {
+    alert("Please enter employee name, ID and designation.");
+    return;
+  }
+
+  const safe = value => String(value || "-").replace(
+    /[&<>"']/g,
+    c => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[c]
+  );
+
+  let title = "";
+  let text = "";
+
+  if (type === "id") {
+    title = "EMPLOYEE ID CARD";
+
+    text = `
+      <h3>SHARIKOTI MATA FOUNDATION</h3>
+      <h2>${title}</h2>
+      <hr>
+      <p><b>Employee Name:</b> ${safe(name)}</p>
+      <p><b>Employee ID:</b> ${safe(id)}</p>
+      <p><b>Designation:</b> ${safe(designation)}</p>
+      <p><b>Department:</b> ${safe(department)}</p>
+      <p><b>Joining Date:</b> ${safe(joiningDate)}</p>
+      <p><b>Issue Date:</b> ${safe(issueDate)}</p>
+      <hr>
+      <p>This card identifies the holder as an employee
+      of the Foundation, subject to the organization's
+      applicable rules and records.</p>
+      <p><b>Authorized Signatory:</b> ${safe(signatory)}</p>
+    `;
+  }
+
+  if (type === "appointment") {
+    title = "APPOINTMENT CERTIFICATE";
+
+    text = `
+      <h2>SHARIKOTI MATA FOUNDATION</h2>
+      <h2>${title}</h2>
+      <hr>
+      <p>Certificate No.: ${safe(id)}</p>
+      <p>This is to inform that
+      <b>${safe(name)}</b> is appointed as
+      <b>${safe(designation)}</b> in the
+      <b>${safe(department)}</b> department.</p>
+      <p>Proposed Joining Date: ${safe(joiningDate)}</p>
+      <p>Issue Date: ${safe(issueDate)}</p>
+      <p>The appointment is subject to the approved
+      appointment letter and applicable organizational rules.</p>
+      <br><br>
+      <p>Authorized Signatory: ${safe(signatory)}</p>
+      <p>SHARIKOTI MATA FOUNDATION</p>
+    `;
+  }
+
+  if (type === "termination") {
+    title = "SERVICE TERMINATION CERTIFICATE";
+
+    text = `
+      <h2>SHARIKOTI MATA FOUNDATION</h2>
+      <h2>${title}</h2>
+      <hr>
+      <p>Employee ID: ${safe(id)}</p>
+      <p>Employee Name: ${safe(name)}</p>
+      <p>Designation: ${safe(designation)}</p>
+      <p>Department: ${safe(department)}</p>
+      <p>Joining Date: ${safe(joiningDate)}</p>
+      <p>Document Date: ${safe(issueDate)}</p>
+      <p>This document records the service status of the
+      above-named employee. It must be issued only after
+      the termination decision has been duly authorized
+      and the effective date and applicable formalities
+      have been verified.</p>
+      <p>Effective Termination Date must be recorded
+      in the approved termination order.</p>
+      <br>
+      <p>Authorized Signatory: ${safe(signatory)}</p>
+      <p>SHARIKOTI MATA FOUNDATION</p>
+    `;
+  }
+
+  document.getElementById("documentContent").innerHTML = text;
+  document.getElementById("output").style.display = "block";
+  document.getElementById("output").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+</script>
+
+</body>
+</html>
