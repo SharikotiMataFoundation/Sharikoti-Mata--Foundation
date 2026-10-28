@@ -3,367 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SHARIKOTI MATA FOUNDATION</title>
-
+<meta name="theme-color" content="#0a5a3a">
+<meta name="description" content="SHARIKOTI MATA FOUNDATION का मोबाइल RecordBook ऐप। कर्मचारी, गौवंश, दान, खर्च, रिपोर्ट और प्रमाणपत्र।">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png" type="image/png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>SHARIKOTI MATA FOUNDATION — RecordBook App</title>
 <style>
-* {
-  box-sizing: border-box;
-}
+:root{--green:#0a5a3a;--light:#e8f5ee;--ink:#18352a;--line:#d8e2dc}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f7f4;color:#17251e;font-family:Arial,"Noto Sans Devanagari",sans-serif;padding-bottom:72px}
+header{background:var(--green);color:white;padding:13px 15px;display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:50%;background:white;color:var(--green);display:grid;place-items:center;font-size:22px;font-weight:bold;flex-shrink:0}
+header h1{font-size:16px;margin:0 0 4px}header p{font-size:11px;margin:0}
+.card{background:white;margin:11px;padding:14px;border-radius:13px;box-shadow:0 2px 8px #163c2810}
+h2{font-size:17px;color:var(--green);margin:0 0 10px}h3{font-size:15px;margin:0 0 9px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{background:var(--light);padding:11px 5px;border-radius:10px;text-align:center;overflow-wrap:anywhere}
+.stat b{font-size:18px;display:block}.stat span{font-size:11px}
+button,.button{border:0;border-radius:9px;padding:10px 12px;background:var(--green);color:white;font-size:13px;cursor:pointer;display:inline-block;text-align:center}
+button.secondary{background:#52645a}button.danger{background:#a62c2c}button.gold{background:#775116}
+button:disabled{opacity:.5}
+.full{width:100%;margin-top:7px}
+label{display:block;font-size:12px;margin:8px 0 3px;color:#34483c}
+input,select,textarea{width:100%;padding:10px;border:1px solid #cbd8cf;border-radius:8px;background:white;font-size:14px}
+textarea{min-height:70px}
+.tablewrap{overflow:auto;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:12px;min-width:400px}
+th,td{border:1px solid var(--line);padding:7px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+th{background:var(--green);color:white}
+.note{font-size:12px;color:#52645a;line-height:1.5}
+.pill{font-size:11px;background:#edf5ef;padding:4px 7px;border-radius:12px;display:inline-block}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:7px 2px;z-index:10}
+.bottom button{background:transparent;color:var(--green);padding:4px;font-size:11px;flex:1}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:30;padding:12px;align-items:center;justify-content:center}
+.modal.active{display:flex}.box{background:white;width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:14px;padding:16px}
+.hidden{display:none!important}
+footer{text-align:center;padding:15px;font-size:11px;color:#66776d}
+@media(min-width:760px){main{max-width:900px;margin:auto}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media print{body{background:white;padding:0}header,.bottom,.noprint,button{display:none!important}.card{box-shadow:none;margin:0;border-radius:0}.print-area{display:block!important}}
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f6f4;
-  color: #222;
-}
-
-header {
-  background: #14532d;
-  color: white;
-  padding: 25px 12px;
-  text-align: center;
-}
-
-header h1 {
-  font-size: 25px;
-  margin: 5px;
-}
-
-nav {
-  background: #166534;
-  padding: 12px;
-  text-align: center;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  padding: 8px;
-  display: inline-block;
-}
-
-section {
-  background: white;
-  padding: 20px;
-  margin: 15px auto;
-  max-width: 850px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px #ddd;
-}
-
-h2 {
-  color: #166534;
-}
-
-label {
-  display: block;
-  margin-top: 12px;
-  font-weight: bold;
-}
-
-input, select {
-  width: 100%;
-  padding: 11px;
-  margin-top: 5px;
-  border: 1px solid #bbb;
-  border-radius: 5px;
-}
-
-button {
-  background: #166534;
-  color: white;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 5px;
-  margin: 12px 5px 0 0;
-  cursor: pointer;
-}
-
-.document {
-  border: 3px double #166534;
-  padding: 25px;
-  margin-top: 20px;
-  text-align: center;
-  background: white;
-  overflow-wrap: anywhere;
-}
-
-footer {
-  background: #14532d;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-top: 25px;
-}
-
-@media print {
-  body * {
-    visibility: hidden;
-  }
-
-  #output, #output * {
-    visibility: visible;
-  }
-
-  #output {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    box-shadow: none;
-  }
-
-  .no-print {
-    display: none !important;
-  }
-}
+#printSheet{display:none}
+body.printing> *:not(#printSheet){display:none!important}
+body.printing #printSheet{display:block!important;background:#fff;color:#17251e;padding:10mm;font-family:Arial,"Noto Sans Devanagari",sans-serif}
+@media print{body.printing{padding:0!important}body.printing #printSheet{display:block!important;padding:0!important} @page{size:A4;margin:12mm}}
+#appStatus{margin:8px 2px 0}
 </style>
 </head>
-
 <body>
+<header><img id="foundationLogo" class="logo" alt="Foundation Logo" src="" style="display:none;object-fit:contain;padding:2px"><div id="logoFallback" class="logo">श्री</div><div><h1>श्रीकोटी माता फाउंडेशन</h1><p>CIN: U85300HP2021NPL008323 · RecordBook App</p></div></header>
+<section class="card noprint" id="installCard" style="margin-top:10px"><div class="grid"><button id="installBtn" onclick="installApp()" disabled>📲 मोबाइल में इंस्टॉल करें</button><button class="secondary" onclick="showInstallHelp()">इंस्टॉल सहायता</button></div><p id="appStatus" class="note" aria-live="polite">ऐप तैयार हो रहा है…</p></section>
+<main>
+<section class="card">
+<h2>📊 डैशबोर्ड</h2>
+<div class="stats">
+<div class="stat"><b id="countStaff">0</b><span>कर्मचारी</span></div>
+<div class="stat"><b id="countCow">0</b><span>गौवंश</span></div>
+<div class="stat"><b id="countRegs">0</b><span>रजिस्टर</span></div>
+<div class="stat"><b id="countDon">₹0</b><span>दान दर्ज</span></div>
+<div class="stat"><b id="countExp">₹0</b><span>खर्च दर्ज</span></div>
+<div class="stat"><b id="countRows">0</b><span>कुल रिकॉर्ड</span></div>
+</div>
+<div class="grid" style="margin-top:10px">
+<button onclick="openAdd('staff')">👥 कर्मचारी जोड़ें</button>
+<button class="gold" onclick="openAdd('gauvansh')">🐄 गौवंश दर्ज करें</button>
+<button onclick="openCertificate()">📜 प्रमाणपत्र बनाएं</button>
+<button class="gold" onclick="makeDocument('receipt')">🧾 दान रसीद बनाएं</button>
+<button class="secondary" onclick="makeDocument('bill')">📑 बिल बनाएं</button>
+<button class="secondary" onclick="exportCSV()">📤 CSV रिपोर्ट</button>
+<button class="secondary" onclick="backupJSON()">💾 बैकअप डाउनलोड</button>
+<button class="secondary" onclick="document.getElementById('restoreFile').click()">♻️ बैकअप रिकवर</button>
+<input id="restoreFile" type="file" accept=".json,application/json" class="hidden" onchange="restoreJSON(event)">
+</div>
+<p class="note" style="margin-top:9px">यह ऐप इसी मोबाइल/ब्राउज़र में रिकॉर्ड सेव करती है। समय-समय पर बैकअप डाउनलोड करके सुरक्षित रखें।</p>
+</section>
 
-<header>
-  <h1>SHARIKOTI MATA FOUNDATION</h1>
-  <p>Social Service | Cow Protection | Rural Development</p>
-  <p>समाज सेवा • गौवंश संरक्षण • ग्रामीण विकास</p>
-</header>
+<section class="card">
+<h2>📚 रजिस्टर</h2>
+<div id="regList"></div>
+<div class="grid noprint">
+<button class="full" onclick="openAdd(currentReg)">➕ चुने हुए रजिस्टर में रिकॉर्ड</button>
+<button class="full secondary" onclick="openCustom()">＋ नया रजिस्टर</button>
+</div>
+<div class="tablewrap" id="tableArea"></div>
+</section>
 
-<nav>
-  <a href="#home">Home</a>
-  <a href="#about">About Us</a>
-  <a href="#services">Services</a>
-  <a href="#certificates">Certificates</a>
-  <a href="#contact">Contact</a>
+<section class="card">
+<h2>📜 प्रमाणपत्र / प्रिंट</h2>
+<p class="note">कर्मचारी चुनकर नियुक्ति, अनुभव या कार्यकाल प्रमाणपत्र का प्रारूप तैयार करें। फिर “PDF सेव करें” चुनें और प्रिंट डायलॉग में “Save as PDF” चुनें। आधिकारिक जारी करने से पहले विवरण और हस्ताक्षर जाँच लें।</p>
+<button class="full" onclick="openCertificate()">प्रमाणपत्र तैयार करें</button>
+<div id="certificatePreview" class="hidden"></div>
+</section>
+
+<section class="card">
+<h2>🧾 बिल और रसीद</h2>
+<p class="note">यहाँ बिल या दान रसीद का प्रिंट-योग्य प्रारूप तैयार करें। सेव करने के लिए संबंधित रजिस्टर में विवरण अलग से दर्ज करें। PDF बनाने के लिए प्रिंट स्क्रीन में “Save as PDF” चुनें।</p>
+<div class="grid"><button onclick="makeDocument('receipt')">दान रसीद तैयार करें</button><button class="secondary" onclick="makeDocument('bill')">बिल तैयार करें</button></div><div id="documentPreview" class="hidden"></div>
+</section>
+<section class="card">
+<h2>🛡️ डेटा सुरक्षा</h2>
+<p class="note">रिकॉर्ड लोकल ब्राउज़र में सेव हैं; यह अपने-आप क्लाउड पर सिंक नहीं होता। फोन बदलने या ब्राउज़र डेटा मिटाने से पहले JSON बैकअप डाउनलोड करें। रिकवर करने पर मौजूदा रिकॉर्ड बैकअप के रिकॉर्ड से बदल जाएंगे।</p>
+<div class="grid"><button class="secondary" onclick="backupJSON()">पूरा बैकअप डाउनलोड</button><button class="danger" onclick="clearAll()">सारा डेटा मिटाएं</button></div><label for="logoUpload">फाउंडेशन का लोगो चुनें (JPG/PNG)</label><input id="logoUpload" type="file" accept="image/*" onchange="saveLogo(event)"><p class="note">लोगो इसी ब्राउज़र में सेव होगा। फोटो/PDF रिकॉर्ड के साथ जोड़े जा सकते हैं। बड़ी फाइलों से मोबाइल ब्राउज़र का स्टोरेज भर सकता है।</p>
+</section>
+</main>
+<footer>SHARIKOTI MATA FOUNDATION · RecordBook App · बिना सदस्यता शुल्क के</footer>
+<nav class="bottom">
+<button onclick="window.scrollTo({top:0,behavior:'smooth'})">🏠<br>होम</button>
+<button onclick="openAdd('staff')">👥<br>कर्मचारी</button>
+<button onclick="openAdd('gauvansh')">🐄<br>गौवंश</button>
+<button onclick="exportCSV()">📊<br>रिपोर्ट</button>
 </nav>
 
-<section id="home">
-  <h2>Welcome to Our Foundation</h2>
-
-  <p>
-    SHARIKOTI MATA FOUNDATION is a non-profit
-    organization working for social welfare,
-    animal welfare, cow protection and rural development.
-  </p>
-
-  <p>
-    शारिकोटी माता फाउंडेशन समाज सेवा, गौवंश संरक्षण,
-    पशु कल्याण और ग्रामीण विकास के लिए कार्यरत संस्था है।
-  </p>
-</section>
-
-<section id="about">
-  <h2>About Our Foundation</h2>
-
-  <p><b>Organization:</b> SHARIKOTI MATA FOUNDATION</p>
-
-  <p><b>Registration No.:</b>
-  U85300HP2021NPL008323</p>
-
-  <p><b>Established:</b> 23 January 2021</p>
-
-  <p><b>Registered Office:</b>
-  Mashnoo, Tehsil Rampur, District Shimla,
-  Himachal Pradesh - 172102</p>
-</section>
-
-<section id="services">
-  <h2>Our Activities</h2>
-
-  <ul>
-    <li>Social Welfare and Community Development</li>
-    <li>Cow Protection and Animal Welfare</li>
-    <li>Rural Development</li>
-    <li>Medicinal Plant Conservation</li>
-    <li>Education and Skill Development</li>
-    <li>Environmental Protection</li>
-  </ul>
-</section>
-
-<section id="certificates" class="no-print">
-  <h2>Employee Document Generator</h2>
-
-  <p>
-    कर्मचारी का विवरण भरकर दस्तावेज तैयार करें।
-  </p>
-
-  <label>Employee Full Name</label>
-  <input id="empName" placeholder="Enter full name">
-
-  <label>Employee ID</label>
-  <input id="empId" placeholder="Example: SMF-001">
-
-  <label>Designation</label>
-  <input id="designation" placeholder="Enter designation">
-
-  <label>Department</label>
-  <input id="department" placeholder="Enter department">
-
-  <label>Joining Date</label>
-  <input id="joiningDate" type="date">
-
-  <label>Issue Date</label>
-  <input id="issueDate" type="date">
-
-  <label>Authorized Signatory</label>
-  <input id="signatory" placeholder="Authorized person's name">
-
-  <label>Select Document</label>
-  <select id="docType">
-    <option value="id">Employee ID Card</option>
-    <option value="appointment">Appointment Certificate</option>
-    <option value="termination">Termination Certificate</option>
-  </select>
-
-  <button onclick="generateDocument()">
-    Generate Document
-  </button>
-
-  <button onclick="window.print()">
-    Print / Save as PDF
-  </button>
-</section>
-
-<section id="output" class="document" style="display:none">
-  <div id="documentContent"></div>
-</section>
-
-<section id="contact">
-  <h2>Contact Us</h2>
-
-  <p>
-    <b>SHARIKOTI MATA FOUNDATION</b>
-  </p>
-
-  <p>
-    Mashnoo, Tehsil Rampur, District Shimla,
-    Himachal Pradesh - 172102
-  </p>
-
-  <p>
-    Email:
-    <a href="mailto:sharikotimatafoundation@gmail.com">
-      sharikotimatafoundation@gmail.com
-    </a>
-  </p>
-
-  <p>
-    Website:
-    sharikotimatafoundation.org.in
-  </p>
-</section>
-
-<footer>
-  <p>© 2026 SHARIKOTI MATA FOUNDATION</p>
-  <p>Serving Society with Dedication</p>
-</footer>
-
+<div class="modal" id="rowModal"><div class="box">
+<h3 id="rowTitle">रिकॉर्ड जोड़ें</h3><div id="rowFields"></div>
+<label>फोटो संलग्न करें (वैकल्पिक)</label><input id="attachmentPhoto" type="file" accept="image/*"><label>PDF/दस्तावेज संलग्न करें (वैकल्पिक)</label><input id="attachmentPdf" type="file" accept=".pdf,application/pdf,image/*"><p class="note">फोटो/PDF इस रिकॉर्ड के साथ सेव होंगे। बहुत बड़ी फाइल से मोबाइल ब्राउज़र का स्टोरेज भर सकता है।</p><div class="grid" style="margin-top:10px"><button onclick="saveRow()">सेव करें</button><button class="secondary" onclick="closeModal('rowModal')">रद्द करें</button></div>
+</div></div>
+<div class="modal" id="customModal"><div class="box">
+<h3>नया रजिस्टर बनाएं</h3><label>रजिस्टर का नाम</label><input id="customName" placeholder="जैसे जिला प्रतिनिधि रजिस्टर">
+<label>कॉलम के नाम (कॉमा लगाकर लिखें)</label><textarea id="customCols" placeholder="नाम, मोबाइल, जिला, पद, तारीख"></textarea>
+<div class="grid"><button onclick="createRegister()">रजिस्टर बनाएं</button><button class="secondary" onclick="closeModal('customModal')">रद्द करें</button></div>
+</div></div>
+<div class="modal" id="certModal"><div class="box">
+<h3>प्रमाणपत्र तैयार करें</h3>
+<label>कर्मचारी</label><select id="certStaff"></select>
+<label>प्रमाणपत्र का प्रकार</label><select id="certType"><option>नियुक्ति प्रमाणपत्र</option><option>अनुभव प्रमाणपत्र</option><option>कार्यकाल प्रमाणपत्र</option><option>सेवा प्रमाणपत्र</option></select>
+<label>प्रमाणपत्र संख्या</label><input id="certNo" value="SMF/CERT/2026/001">
+<label>जारी करने की तारीख</label><input id="certDate" type="date">
+<label>अतिरिक्त विवरण / कार्यकाल</label><textarea id="certDetails" placeholder="जैसे 01/04/2024 से वर्तमान तक"></textarea>
+<label>हस्ताक्षरकर्ता का पद</label><select id="certSign"><option>Director</option><option>Chairman</option></select>
+<div class="grid" style="margin-top:10px"><button onclick="generateCertificate()">प्रमाणपत्र दिखाएं</button><button class="secondary" onclick="closeModal('certModal')">बंद करें</button></div>
+</div></div>
 <script>
-function generateDocument() {
-  const name = document.getElementById("empName").value.trim();
-  const id = document.getElementById("empId").value.trim();
-  const designation = document.getElementById("designation").value.trim();
-  const department = document.getElementById("department").value.trim();
-  const joiningDate = document.getElementById("joiningDate").value;
-  const issueDate = document.getElementById("issueDate").value;
-  const signatory = document.getElementById("signatory").value.trim();
-  const type = document.getElementById("docType").value;
-
-  if (!name || !designation || !id) {
-    alert("Please enter employee name, ID and designation.");
-    return;
-  }
-
-  const safe = value => String(value || "-").replace(
-    /[&<>"']/g,
-    c => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[c]
-  );
-
-  let title = "";
-  let text = "";
-
-  if (type === "id") {
-    title = "EMPLOYEE ID CARD";
-
-    text = `
-      <h3>SHARIKOTI MATA FOUNDATION</h3>
-      <h2>${title}</h2>
-      <hr>
-      <p><b>Employee Name:</b> ${safe(name)}</p>
-      <p><b>Employee ID:</b> ${safe(id)}</p>
-      <p><b>Designation:</b> ${safe(designation)}</p>
-      <p><b>Department:</b> ${safe(department)}</p>
-      <p><b>Joining Date:</b> ${safe(joiningDate)}</p>
-      <p><b>Issue Date:</b> ${safe(issueDate)}</p>
-      <hr>
-      <p>This card identifies the holder as an employee
-      of the Foundation, subject to the organization's
-      applicable rules and records.</p>
-      <p><b>Authorized Signatory:</b> ${safe(signatory)}</p>
-    `;
-  }
-
-  if (type === "appointment") {
-    title = "APPOINTMENT CERTIFICATE";
-
-    text = `
-      <h2>SHARIKOTI MATA FOUNDATION</h2>
-      <h2>${title}</h2>
-      <hr>
-      <p>Certificate No.: ${safe(id)}</p>
-      <p>This is to inform that
-      <b>${safe(name)}</b> is appointed as
-      <b>${safe(designation)}</b> in the
-      <b>${safe(department)}</b> department.</p>
-      <p>Proposed Joining Date: ${safe(joiningDate)}</p>
-      <p>Issue Date: ${safe(issueDate)}</p>
-      <p>The appointment is subject to the approved
-      appointment letter and applicable organizational rules.</p>
-      <br><br>
-      <p>Authorized Signatory: ${safe(signatory)}</p>
-      <p>SHARIKOTI MATA FOUNDATION</p>
-    `;
-  }
-
-  if (type === "termination") {
-    title = "SERVICE TERMINATION CERTIFICATE";
-
-    text = `
-      <h2>SHARIKOTI MATA FOUNDATION</h2>
-      <h2>${title}</h2>
-      <hr>
-      <p>Employee ID: ${safe(id)}</p>
-      <p>Employee Name: ${safe(name)}</p>
-      <p>Designation: ${safe(designation)}</p>
-      <p>Department: ${safe(department)}</p>
-      <p>Joining Date: ${safe(joiningDate)}</p>
-      <p>Document Date: ${safe(issueDate)}</p>
-      <p>This document records the service status of the
-      above-named employee. It must be issued only after
-      the termination decision has been duly authorized
-      and the effective date and applicable formalities
-      have been verified.</p>
-      <p>Effective Termination Date must be recorded
-      in the approved termination order.</p>
-      <br>
-      <p>Authorized Signatory: ${safe(signatory)}</p>
-      <p>SHARIKOTI MATA FOUNDATION</p>
-    `;
-  }
-
-  document.getElementById("documentContent").innerHTML = text;
-  document.getElementById("output").style.display = "block";
-  document.getElementById("output").scrollIntoView({
-    behavior: "smooth"
-  });
+const STORAGE_KEY='smf_recordbook_v3';
+const OLD_STORAGE_KEY='smf_recordbook_v2';
+const defaultRegs=[
+{id:'staff',name:'कर्मचारी रजिस्टर',cols:['कर्मचारी ID','नाम','मोबाइल','पद','जॉइनिंग तारीख','प्रकार'],data:[['SMF/EMP/2024/018','Joginder Singh','98XXXXXX10','Director','01/04/2024','Full-time']]},
+{id:'gauvansh',name:'गौवंश रिकॉर्ड',cols:['टैग नंबर','नाम','नस्ल','उम्र','गाँव','स्वास्थ्य','आने की तारीख'],data:[]},
+{id:'donation',name:'दान रजिस्टर',cols:['तारीख','दाता का नाम','राशि (₹)','रसीद नंबर'],data:[]},
+{id:'expense',name:'खर्च रजिस्टर',cols:['तारीख','विवरण','राशि (₹)','वाउचर नंबर'],data:[]},
+{id:'bills',name:'बिल बुक',cols:['बिल नंबर','तारीख','प्राप्तकर्ता/विक्रेता','विवरण','राशि (₹)','भुगतान स्थिति'],data:[]},
+{id:'receipts',name:'रसीद बुक / दान रसीद',cols:['रसीद नंबर','तारीख','दाता का नाम','मोबाइल','राशि (₹)','उद्देश्य','भुगतान माध्यम'],data:[]},
+{id:'attendance',name:'उपस्थिति रजिस्टर',cols:['महीना','कर्मचारी नाम','उपस्थित दिन','वेतन (₹)'],data:[]},
+{id:'district',name:'जिला प्रतिनिधि / स्वयंसेवक',cols:['नाम','मोबाइल','जिला','पद','जॉइनिंग तारीख','स्थिति'],data:[]}
+];
+let regs=loadData(),currentReg='staff',editingIndex=null,editingAttachments={photo:'',pdf:''};
+const LOGO_KEY='smf_recordbook_logo_v1';
+function loadLogo(){try{const v=localStorage.getItem(LOGO_KEY);if(v){const img=document.getElementById('foundationLogo');img.src=v;img.style.display='block';document.getElementById('logoFallback').style.display='none';}}catch(e){}}
+function saveLogo(ev){const f=ev.target.files&&ev.target.files[0];if(!f)return;if(!f.type.startsWith('image/')){alert('कृपया इमेज फाइल चुनें।');return;}const rd=new FileReader();rd.onload=()=>{try{localStorage.setItem(LOGO_KEY,rd.result);loadLogo();alert('लोगो सेव हो गया।');}catch(e){alert('लोगो बहुत बड़ा है या ब्राउज़र स्टोरेज भर गया है। छोटी इमेज चुनें।');}};rd.readAsDataURL(f);}
+function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY));if(Array.isArray(x)&&x.length)return normalizeRegs(x);const old=JSON.parse(localStorage.getItem(OLD_STORAGE_KEY));if(Array.isArray(old)&&old.length){const migrated=normalizeRegs(old);localStorage.setItem(STORAGE_KEY,JSON.stringify(migrated));return migrated;}}catch(e){}return structuredCloneSafe(defaultRegs)}
+function normalizeRegs(input){return input.filter(r=>r&&typeof r.id==='string'&&typeof r.name==='string'&&Array.isArray(r.cols)&&Array.isArray(r.data)).map(r=>({...r,cols:r.cols.map(String),data:r.data.map(row=>Array.isArray(row)?row:[])}));}
+function structuredCloneSafe(x){return JSON.parse(JSON.stringify(x))}
+function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(regs));render();setStatus('रिकॉर्ड इस मोबाइल/ब्राउज़र में सेव हो गया।');}catch(e){alert('स्टोरेज भर गया या उपलब्ध नहीं है। पहले बैकअप डाउनलोड करें; बड़ी फोटो/PDF हटाएँ या छोटी फाइल चुनें।');setStatus('सेव नहीं हुआ: ब्राउज़र स्टोरेज भर गया।')}}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function money(v){const n=Number(String(v||'0').replace(/[,₹\s]/g,''));return Number.isFinite(n)?n:0}
+function render(){
+ document.getElementById('countStaff').textContent=(regs.find(r=>r.id==='staff')?.data.length)||0;
+ document.getElementById('countCow').textContent=(regs.find(r=>r.id==='gauvansh')?.data.length)||0;
+ document.getElementById('countRegs').textContent=regs.length;
+ document.getElementById('countDon').textContent='₹'+(regs.find(r=>r.id==='donation')?.data||[]).reduce((s,row)=>s+money(row[2]),0).toLocaleString('en-IN');
+ document.getElementById('countExp').textContent='₹'+(regs.find(r=>r.id==='expense')?.data||[]).reduce((s,row)=>s+money(row[2]),0).toLocaleString('en-IN');
+ document.getElementById('countRows').textContent=regs.reduce((s,r)=>s+r.data.length,0);
+ document.getElementById('regList').innerHTML=regs.map(r=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border:1px solid #d8e2dc;border-radius:9px;margin:5px 0"><div><b>${esc(r.name)}</b><br><span class="pill">${r.data.length} रिकॉर्ड · ${r.cols.length} कॉलम</span></div><button onclick="selectReg('${esc(r.id)}')">खोलें</button></div>`).join('');
+ renderTable();
 }
-</script>
+function selectReg(id){currentReg=id;renderTable();document.getElementById('tableArea').scrollIntoView({behavior:'smooth',block:'start'})}
+function renderTable(){
+ const r=regs.find(x=>x.id===currentReg);if(!r)return;
+ let out=`<h3>${esc(r.name)}</h3><div class="actions noprint"><button onclick="openAdd('${esc(r.id)}')">＋ रिकॉर्ड जोड़ें</button><button class="secondary" onclick="exportOne('${esc(r.id)}')">इस रजिस्टर की CSV</button></div>`;
+ if(!r.data.length)out+='<p class="note" style="padding:10px">अभी कोई रिकॉर्ड नहीं है। “रिकॉर्ड जोड़ें” दबाएं।</p>';
+ else out+='<table><thead><tr>'+r.cols.map(c=>`<th>${esc(c)}</th>`).join('')+'<th>फोटो/PDF</th><th class="noprint">कार्य</th></tr></thead><tbody>'+r.data.map((row,i)=>'<tr>'+r.cols.map((_,j)=>`<td>${esc(row[j])}</td>`).join('')+`<td>${row[r.cols.length]?`<a href="${row[r.cols.length]}" target="_blank" rel="noopener">फोटो देखें</a>`:'—'} ${row[r.cols.length+1]?`<br><a href="${row[r.cols.length+1]}" target="_blank" rel="noopener">दस्तावेज खोलें</a>`:''}</td><td class="noprint"><div class="actions"><button onclick="editRow(${i})">✏️</button><button class="danger" onclick="deleteRow(${i})">🗑️</button></div></td></tr>`).join('')+'</tbody></table>';
+ document.getElementById('tableArea').innerHTML=out;
+}
+function openAdd(id){currentReg=id;const r=regs.find(x=>x.id===id);if(!r){alert('रजिस्टर नहीं मिला');return}editingIndex=null;editingAttachments={photo:'',pdf:''};document.getElementById('attachmentPhoto').value='';document.getElementById('attachmentPdf').value='';document.getElementById('rowTitle').textContent='नया रिकॉर्ड — '+r.name;document.getElementById('rowFields').innerHTML=r.cols.map((c,i)=>`<label>${esc(c)}</label><input id="field_${i}" autocomplete="off">`).join('');document.getElementById('rowModal').classList.add('active')}
+function editRow(i){const r=regs.find(x=>x.id===currentReg);editingIndex=i;const row=r.data[i];editingAttachments={photo:row[r.cols.length]||'',pdf:row[r.cols.length+1]||''};document.getElementById('attachmentPhoto').value='';document.getElementById('attachmentPdf').value='';document.getElementById('rowTitle').textContent='रिकॉर्ड बदलें — '+r.name;document.getElementById('rowFields').innerHTML=r.cols.map((c,j)=>`<label>${esc(c)}</label><input id="field_${j}" value="${esc(row[j]||'')}">`).join('');document.getElementById('rowModal').classList.add('active')}
+function readAsDataURL(file){return new Promise((resolve,reject)=>{if(!file){resolve('');return;}const rd=new FileReader();rd.onload=()=>resolve(String(rd.result));rd.onerror=()=>reject(new Error('file read failed'));rd.readAsDataURL(file);});}
+async function saveRow(){const r=regs.find(x=>x.id===currentReg);if(!r){alert('रजिस्टर नहीं मिला।');return}const row=r.cols.map((_,i)=>document.getElementById('field_'+i).value.trim());if(row.every(v=>!v)&&editingIndex===null){alert('कम-से-कम एक जानकारी भरें।');return}const photoFile=document.getElementById('attachmentPhoto').files[0],pdfFile=document.getElementById('attachmentPdf').files[0];try{if(photoFile&&photoFile.size>2*1024*1024){alert('फोटो 2 MB से छोटी रखें।');return}if(pdfFile&&pdfFile.size>4*1024*1024){alert('PDF/दस्तावेज 4 MB से छोटा रखें।');return}if(photoFile)editingAttachments.photo=await readAsDataURL(photoFile);if(pdfFile)editingAttachments.pdf=await readAsDataURL(pdfFile);row[r.cols.length]=editingAttachments.photo||'';row[r.cols.length+1]=editingAttachments.pdf||'';if(editingIndex===null)r.data.push(row);else r.data[editingIndex]=row;persist();closeModal('rowModal');}catch(e){alert('फाइल पढ़ी नहीं जा सकी। कृपया दोबारा प्रयास करें।')}}
+function deleteRow(i){if(!confirm('क्या यह रिकॉर्ड हटाना है?'))return;regs.find(x=>x.id===currentReg).data.splice(i,1);persist()}
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+function openCustom(){document.getElementById('customName').value='';document.getElementById('customCols').value='';document.getElementById('customModal').classList.add('active')}
+function createRegister(){const name=document.getElementById('customName').value.trim(),cols=document.getElementById('customCols').value.split(',').map(x=>x.trim()).filter(Boolean);if(!name||!cols.length){alert('रजिस्टर का नाम और कम-से-कम एक कॉलम लिखें।');return}const id='custom_'+Date.now();regs.push({id,name,cols,data:[]});currentReg=id;persist();closeModal('customModal')}
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function downloadBlob(blob,name){try{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},10000);setStatus('डाउनलोड शुरू हुआ: '+name+' — डाउनलोड फोल्डर जाँचें।')}catch(e){alert('डाउनलोड शुरू नहीं हुआ। ब्राउज़र मेन्यू से Share/Download आजमाएँ।')}}
+function exportOne(id){const r=regs.find(x=>x.id===id);const rows=[r.cols,...r.data.map(row=>r.cols.map((_,i)=>row[i]??''))];const csv='\uFEFF'+rows.map(row=>row.map(csvCell).join(',')).join('\r\n');downloadBlob(new Blob([csv],{type:'text/csv;charset=utf-8;'}),'SMF_'+r.name.replace(/[^a-z0-9_-]/gi,'_')+'.csv')}
+function exportCSV(){const lines=[];regs.forEach(r=>{lines.push([r.name].map(csvCell).join(','));lines.push(r.cols.map(csvCell).join(','));r.data.forEach(row=>lines.push(r.cols.map((_,i)=>row[i]??'').map(csvCell).join(',')));lines.push('')});downloadBlob(new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'}),'SMF_All_Registers.csv')}
+function backupJSON(){downloadBlob(new Blob([JSON.stringify({app:'SHARIKOTI MATA FOUNDATION RecordBook',version:2,exportedAt:new Date().toISOString(),registers:regs},null,2)],{type:'application/json'}),'SMF_RecordBook_Backup_'+new Date().toISOString().slice(0,10)+'.json')}
+function restoreJSON(ev){const f=ev.target.files&&ev.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const x=JSON.parse(rd.result);const data=Array.isArray(x)?x:x.registers;if(!Array.isArray(data)||!data.every(r=>r&&typeof r.name==='string'&&Array.isArray(r.cols)&&Array.isArray(r.data)))throw Error('invalid');if(!confirm('रिकवर करने पर मौजूदा डेटा बैकअप के डेटा से बदल जाएगा। पहले मौजूदा बैकअप डाउनलोड कर लें। आगे बढ़ें?'))return;regs=normalizeRegs(data);if(!regs.some(r=>r.id==='staff'))regs.unshift({id:'staff',name:'कर्मचारी रजिस्टर',cols:['कर्मचारी ID','नाम','मोबाइल','पद','जॉइनिंग तारीख','प्रकार'],data:[]});if(!regs.some(r=>r.id==='gauvansh'))regs.push({id:'gauvansh',name:'गौवंश रिकॉर्ड',cols:['टैग नंबर','नाम','नस्ल','उम्र','गाँव','स्वास्थ्य','आने की तारीख'],data:[]});currentReg=regs[0]?.id||'staff';persist();alert('बैकअप सफलतापूर्वक रिकवर हुआ। रिकॉर्ड की संख्या जाँच लें।')}catch(e){alert('यह सही RecordBook JSON बैकअप नहीं है। मूल बैकअप फाइल को न बदलें।')}finally{ev.target.value=''}};rd.readAsText(f)}
+function clearAll(){if(!confirm('सभी रजिस्टरों के रिकॉर्ड स्थायी रूप से हटेंगे। पहले बैकअप लें। जारी रखें?'))return;if(!confirm('आखिरी पुष्टि: क्या सारा डेटा मिटाना है?'))return;regs.forEach(r=>r.data=[]);persist()}
+function openCertificate(){const r=regs.find(x=>x.id==='staff');const select=document.getElementById('certStaff');select.innerHTML=r.data.map((row,i)=>`<option value="${i}">${esc(row[1]||row[0]||'कर्मचारी '+(i+1))}</option>`).join('');if(!r.data.length){alert('पहले कर्मचारी रजिस्टर में कर्मचारी जोड़ें।');return}document.getElementById('certDate').value=new Date().toISOString().slice(0,10);document.getElementById('certModal').classList.add('active')}
+function generateCertificate(){const r=regs.find(x=>x.id==='staff'),row=r.data[Number(document.getElementById('certStaff').value)];if(!row)return;const type=document.getElementById('certType').value,no=document.getElementById('certNo').value.trim(),date=document.getElementById('certDate').value,details=document.getElementById('certDetails').value.trim(),sign=document.getElementById('certSign').value;const name=row[1]||'',designation=row[3]||'',join=row[4]||'';const text=type==='नियुक्ति प्रमाणपत्र'?`यह प्रमाणित किया जाता है कि ${name} को संस्था में ${designation} के पद पर ${join||'उल्लेखित तारीख से'} नियुक्त/कार्यरत दर्ज किया गया है।`:type==='अनुभव प्रमाणपत्र'?`यह प्रमाणित किया जाता है कि ${name} ने संस्था में ${designation} के रूप में ${details||('जॉइनिंग तारीख '+join)} के दौरान सेवाएँ दी हैं।`:type==='कार्यकाल प्रमाणपत्र'?`यह प्रमाणित किया जाता है कि ${name} का संस्था में ${designation} के पद पर कार्यकाल ${details||('जॉइनिंग तारीख '+join)} के अनुसार दर्ज है।`:`यह प्रमाणित किया जाता है कि ${name} संस्था में ${designation} के रूप में सेवा दे रहे/रही हैं। ${details}`;
+document.getElementById('certificatePreview').innerHTML=`<div id="printCert" style="background:white;border:5px double #0a5a3a;padding:24px;max-width:800px;margin:14px auto;color:#17251e"><div style="text-align:center;border-bottom:2px solid #0a5a3a;padding-bottom:12px">${document.getElementById('foundationLogo').src?`<img src="${document.getElementById('foundationLogo').src}" style="width:72px;height:72px;object-fit:contain">`:``}<div style="font-size:13px">SHARIKOTI MATA FOUNDATION</div><h2 style="margin:6px 0">श्रीकोटी माता फाउंडेशन</h2><div style="font-size:11px">CIN: U85300HP2021NPL008323 · Mashnoo, Tehsil Rampur, District Shimla, Himachal Pradesh - 172102</div></div><p style="text-align:right;margin-top:18px">प्रमाणपत्र संख्या: ${esc(no)}<br>दिनांक: ${esc(date)}</p><h2 style="text-align:center;margin:24px 0">${esc(type)}</h2><p style="font-size:16px;line-height:2;text-align:justify">${esc(text)}</p><p style="font-size:12px;line-height:1.7;margin-top:20px">यह प्रमाणपत्र संस्था के उपलब्ध रिकॉर्ड के आधार पर तैयार किया गया है। जारी करने से पहले विवरण की जाँच करें।</p><div style="display:flex;justify-content:space-between;gap:25px;margin-top:65px"><div>मुहर / कार्यालय</div><div style="text-align:center;min-width:150px;border-top:1px solid #555;padding-top:8px">${esc(sign)}<br>SHARIKOTI MATA FOUNDATION</div></div></div><div class="actions noprint" style="justify-content:center;margin:12px"><button onclick="printCertificate()">PDF सेव करें / प्रिंट</button><button class="secondary" onclick="document.getElementById('certificatePreview').classList.add('hidden')">बंद करें</button></div>`;
+closeModal('certModal');document.getElementById('certificatePreview').classList.remove('hidden');document.getElementById('certificatePreview').scrollIntoView({behavior:'smooth'})}
 
+function makeDocument(kind){
+ const isReceipt=kind==='receipt';
+ const docTitle=isReceipt?'दान प्राप्ति रसीद':'बिल / व्यय विवरण';
+ const number=prompt(isReceipt?'रसीद संख्या लिखें':'बिल संख्या लिखें',isReceipt?'SMF/REC/'+new Date().getFullYear()+'/001':'SMF/BILL/'+new Date().getFullYear()+'/001');if(number===null)return;
+ const party=prompt(isReceipt?'दाता का नाम लिखें':'प्राप्तकर्ता / विक्रेता का नाम लिखें','');if(party===null)return;
+ const amount=prompt('राशि (₹) लिखें','');if(amount===null)return;
+ const detail=prompt(isReceipt?'दान का उद्देश्य लिखें':'वस्तु / सेवा का विवरण लिखें',isReceipt?'गौवंश संरक्षण एवं सामाजिक सेवा':'');if(detail===null)return;
+ const date=new Date().toLocaleDateString('en-GB');
+ const logo=document.getElementById('foundationLogo');const logoHTML=logo&&logo.src?`<img src="${logo.src}" style="width:72px;height:72px;object-fit:contain">`:'';
+ const extra=isReceipt?`<p><b>धन्यवाद:</b> SHARIKOTI MATA FOUNDATION को सहयोग देने के लिए धन्यवाद।</p><p><b>भुगतान माध्यम:</b> __________________</p>`:`<p><b>भुगतान स्थिति:</b> __________________</p><p><b>अधिकृत स्वीकृति:</b> __________________</p>`;
+ document.getElementById('documentPreview').innerHTML=`<div id="printDoc" style="background:white;border:3px double #0a5a3a;padding:22px;max-width:760px;margin:12px auto;color:#17251e"><div style="display:flex;align-items:center;gap:14px;border-bottom:2px solid #0a5a3a;padding-bottom:12px">${logoHTML}<div><h2 style="margin:0">SHARIKOTI MATA FOUNDATION</h2><div>श्रीकोटी माता फाउंडेशन</div><small>CIN: U85300HP2021NPL008323 · Mashnoo, Tehsil Rampur, District Shimla, H.P. 172102</small><br><small>sharikotimatafoundation@gmail.com</small></div></div><h2 style="text-align:center;margin:24px 0">${docTitle}</h2><p><b>${isReceipt?'रसीद':'बिल'} संख्या:</b> ${esc(number)} <span style="float:right"><b>दिनांक:</b> ${esc(date)}</span></p><p><b>${isReceipt?'दाता का नाम':'प्राप्तकर्ता / विक्रेता'}:</b> ${esc(party)}</p><p><b>विवरण / उद्देश्य:</b> ${esc(detail)}</p><div style="border:1px solid #9aab9f;padding:16px;font-size:20px;margin:22px 0"><b>राशि: ₹ ${esc(amount)}</b></div>${extra}<div style="display:flex;justify-content:space-between;margin-top:65px"><span>कार्यालय की मुहर</span><span style="text-align:center;border-top:1px solid #333;padding-top:8px;min-width:150px">अधिकृत हस्ताक्षर<br>SHARIKOTI MATA FOUNDATION</span></div></div><div class="actions noprint" style="justify-content:center;margin:10px"><button onclick="printDocument()">PDF सेव करें / प्रिंट</button><button class="secondary" onclick="document.getElementById('documentPreview').classList.add('hidden')">बंद करें</button></div>`;
+ document.getElementById('documentPreview').classList.remove('hidden');document.getElementById('documentPreview').scrollIntoView({behavior:'smooth'});
+}
+function printPageContent(contentId,title){const content=document.getElementById(contentId);if(!content){alert('प्रिंट करने वाला दस्तावेज़ नहीं मिला।');return}let sheet=document.getElementById('printSheet');if(!sheet){sheet=document.createElement('div');sheet.id='printSheet';document.body.appendChild(sheet)}sheet.innerHTML='<h3 style="text-align:center;margin:0 0 8mm">'+esc(title)+'</h3>'+content.outerHTML;document.body.classList.add('printing');const cleanup=()=>{document.body.classList.remove('printing');sheet.innerHTML='';window.removeEventListener('afterprint',cleanup)};window.addEventListener('afterprint',cleanup,{once:true});setTimeout(()=>{window.print();setTimeout(cleanup,1200)},150)}
+function printDocument(){printPageContent('printDoc','SHARIKOTI MATA FOUNDATION — बिल / दान रसीद')}
+function printCertificate(){printPageContent('printCert','SHARIKOTI MATA FOUNDATION — प्रमाणपत्र')}
+function setStatus(message){const el=document.getElementById('appStatus');if(el)el.textContent=message}
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;const b=document.getElementById('installBtn');if(b){b.disabled=false;b.textContent='📲 मोबाइल में इंस्टॉल करें'}setStatus('ऐप इंस्टॉल के लिए तैयार है।')});
+window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;setStatus('ऐप मोबाइल में इंस्टॉल हो गया।')});
+async function installApp(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();const result=await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;setStatus(result.outcome==='accepted'?'इंस्टॉल स्वीकार किया गया।':'इंस्टॉल अभी नहीं किया गया।');return}showInstallHelp()}
+function showInstallHelp(){alert('इंस्टॉल करने के लिए: पहले इस ऐप को GitHub Pages जैसी HTTPS वेबसाइट पर खोलें। Chrome में ऊपर ⋮ मेन्यू दबाएँ और “Install app” या “Add to Home screen” चुनें। यदि विकल्प नहीं दिखता, पेज रिफ्रेश करें और कुछ देर बाद दोबारा देखें।')}
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').then(()=>setStatus('ऐप ऑफलाइन उपयोग के लिए तैयार है।')).catch(()=>setStatus('ऐप खुल गया है; ऑफलाइन कैश सेट नहीं हो सका।')))}
+
+render();loadLogo();setStatus('रिकॉर्ड इसी मोबाइल/ब्राउज़र में सेव होते हैं। सुरक्षित रखने के लिए बैकअप डाउनलोड करें।');
+</script>
 </body>
 </html>
