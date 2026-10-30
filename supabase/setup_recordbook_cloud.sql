@@ -1,94 +1,67 @@
--- SHARIKOTI MATA FOUNDATION RecordBook cloud setup
--- Run once in Supabase SQL Editor. Uses authenticated Director access only.
--- The public publishable key belongs in the app; never use service_role here.
+-- SHARIKOTI MATA FOUNDATION RecordBook cloud storage
+-- SAFE VERSION: creates a separate table; does not drop or modify existing tables/policies.
+-- Run this in Supabase SQL Editor. Access is restricted to each signed-in user’s own row.
 
-create unique index if not exists user_access_auth_user_id_uidx
-  on public.user_access (auth_user_id);
+create table if not exists public.smf_recordbook_cloud (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null unique references auth.users(id) on delete cascade,
+  record_data jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
 
-insert into public.user_access (auth_user_id, role)
-values ('c351417f-a815-4fff-8b13-1ae4707233e3'::uuid, 'Director')
-on conflict (auth_user_id)
-do update set role = excluded.role;
+alter table public.smf_recordbook_cloud enable row level security;
 
-create unique index if not exists recordbook_data_record_type_uidx
-  on public.recordbook_data (record_type);
+grant select, insert, update, delete
+on public.smf_recordbook_cloud to authenticated;
 
-alter table public.user_access enable row level security;
-alter table public.recordbook_data enable row level security;
-
--- Remove old policies on these two tables so no permissive legacy policy
--- accidentally grants broader access.
 do $$
-declare p record;
 begin
-  for p in
-    select schemaname, tablename, policyname
-    from pg_policies
+  if not exists (
+    select 1 from pg_policies
     where schemaname = 'public'
-      and tablename in ('user_access', 'recordbook_data')
-  loop
-    execute format('drop policy if exists %I on %I.%I',
-      p.policyname, p.schemaname, p.tablename);
-  end loop;
+      and tablename = 'smf_recordbook_cloud'
+      and policyname = 'smf_cloud_select_own'
+  ) then
+    create policy smf_cloud_select_own
+      on public.smf_recordbook_cloud
+      for select to authenticated
+      using (owner_id = auth.uid());
+  end if;
+
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public'
+      and tablename = 'smf_recordbook_cloud'
+      and policyname = 'smf_cloud_insert_own'
+  ) then
+    create policy smf_cloud_insert_own
+      on public.smf_recordbook_cloud
+      for insert to authenticated
+      with check (owner_id = auth.uid());
+  end if;
+
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public'
+      and tablename = 'smf_recordbook_cloud'
+      and policyname = 'smf_cloud_update_own'
+  ) then
+    create policy smf_cloud_update_own
+      on public.smf_recordbook_cloud
+      for update to authenticated
+      using (owner_id = auth.uid())
+      with check (owner_id = auth.uid());
+  end if;
+
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public'
+      and tablename = 'smf_recordbook_cloud'
+      and policyname = 'smf_cloud_delete_own'
+  ) then
+    create policy smf_cloud_delete_own
+      on public.smf_recordbook_cloud
+      for delete to authenticated
+      using (owner_id = auth.uid());
+  end if;
 end $$;
-
-create policy "user_access_read_own"
-on public.user_access
-for select
-to authenticated
-using (auth_user_id = auth.uid());
-
-create policy "recordbook_director_select"
-on public.recordbook_data
-for select
-to authenticated
-using (
-  exists (
-    select 1 from public.user_access ua
-    where ua.auth_user_id = auth.uid()
-      and ua.role = 'Director'
-  )
-);
-
-create policy "recordbook_director_insert"
-on public.recordbook_data
-for insert
-to authenticated
-with check (
-  exists (
-    select 1 from public.user_access ua
-    where ua.auth_user_id = auth.uid()
-      and ua.role = 'Director'
-  )
-);
-
-create policy "recordbook_director_update"
-on public.recordbook_data
-for update
-to authenticated
-using (
-  exists (
-    select 1 from public.user_access ua
-    where ua.auth_user_id = auth.uid()
-      and ua.role = 'Director'
-  )
-)
-with check (
-  exists (
-    select 1 from public.user_access ua
-    where ua.auth_user_id = auth.uid()
-      and ua.role = 'Director'
-  )
-);
-
-create policy "recordbook_director_delete"
-on public.recordbook_data
-for delete
-to authenticated
-using (
-  exists (
-    select 1 from public.user_access ua
-    where ua.auth_user_id = auth.uid()
-      and ua.role = 'Director'
-  )
-);
