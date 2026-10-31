@@ -56,6 +56,17 @@ body.printing #printSheet{display:block!important;background:#fff;color:#17251e;
 <body>
 <header><img id="foundationLogo" class="logo" alt="Foundation Logo" src="" style="display:none;object-fit:contain;padding:2px"><div id="logoFallback" class="logo">श्री</div><div><h1>श्रीकोटी माता फाउंडेशन</h1><p>CIN: U85300HP2021NPL008323 · RecordBook App</p></div></header>
 <section class="card noprint" id="installCard" style="margin-top:10px"><div class="grid"><button id="installBtn" onclick="installApp()" disabled>📲 मोबाइल में इंस्टॉल करें</button><button class="secondary" onclick="showInstallHelp()">इंस्टॉल सहायता</button></div><p id="appStatus" class="note" aria-live="polite">ऐप तैयार हो रहा है…</p></section>
+<section class="card noprint" id="cloudCard">
+<h2>☁️ ऑनलाइन क्लाउड लॉगिन</h2>
+<p class="note">अपने Foundation अकाउंट से लॉगिन करें। लॉगिन के बाद इस अकाउंट के रिकॉर्ड Supabase क्लाउड में सेव और सिंक होंगे।</p>
+<div id="cloudSignedOut">
+<label for="cloudEmail">ईमेल</label><input id="cloudEmail" type="email" autocomplete="username" placeholder="आपका ईमेल">
+<label for="cloudPassword">पासवर्ड</label><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="पासवर्ड">
+<div class="grid" style="margin-top:10px"><button onclick="cloudLogin()">लॉगिन करें</button><button class="secondary" onclick="cloudSignup()">नया अकाउंट बनाएं</button></div>
+</div>
+<div id="cloudSignedIn" class="hidden"><p id="cloudUserLabel" class="note"></p><button class="danger" onclick="cloudLogout()">लॉगआउट</button></div>
+<p id="cloudStatus" class="note" aria-live="polite">क्लाउड कनेक्शन तैयार हो रहा है…</p>
+</section>
 <main>
 <section class="card">
 <h2>📊 डैशबोर्ड</h2>
@@ -78,7 +89,7 @@ body.printing #printSheet{display:block!important;background:#fff;color:#17251e;
 <button class="secondary" onclick="document.getElementById('restoreFile').click()">♻️ बैकअप रिकवर</button>
 <input id="restoreFile" type="file" accept=".json,application/json" class="hidden" onchange="restoreJSON(event)">
 </div>
-<p class="note" style="margin-top:9px">यह ऐप इसी मोबाइल/ब्राउज़र में रिकॉर्ड सेव करती है। समय-समय पर बैकअप डाउनलोड करके सुरक्षित रखें।</p>
+<p class="note" style="margin-top:9px">रिकॉर्ड पहले इस ब्राउज़र में सुरक्षित रहते हैं। Foundation अकाउंट से लॉगिन होने पर क्लाउड में भी सिंक होते हैं। समय-समय पर बैकअप डाउनलोड रखें।</p>
 </section>
 
 <section class="card">
@@ -105,7 +116,7 @@ body.printing #printSheet{display:block!important;background:#fff;color:#17251e;
 </section>
 <section class="card">
 <h2>🛡️ डेटा सुरक्षा</h2>
-<p class="note">रिकॉर्ड लोकल ब्राउज़र में सेव हैं; यह अपने-आप क्लाउड पर सिंक नहीं होता। फोन बदलने या ब्राउज़र डेटा मिटाने से पहले JSON बैकअप डाउनलोड करें। रिकवर करने पर मौजूदा रिकॉर्ड बैकअप के रिकॉर्ड से बदल जाएंगे।</p>
+<p class="note">लॉगिन होने पर रिकॉर्ड इस अकाउंट के Supabase क्लाउड में भी सेव होते हैं। बिना लॉगिन के रिकॉर्ड केवल इसी ब्राउज़र में रहेंगे। फोन बदलने या ब्राउज़र डेटा मिटाने से पहले JSON बैकअप डाउनलोड करें।</p>
 <div class="grid"><button class="secondary" onclick="backupJSON()">पूरा बैकअप डाउनलोड</button><button class="danger" onclick="clearAll()">सारा डेटा मिटाएं</button></div><label for="logoUpload">फाउंडेशन का लोगो चुनें (JPG/PNG)</label><input id="logoUpload" type="file" accept="image/*" onchange="saveLogo(event)"><p class="note">लोगो इसी ब्राउज़र में सेव होगा। फोटो/PDF रिकॉर्ड के साथ जोड़े जा सकते हैं। बड़ी फाइलों से मोबाइल ब्राउज़र का स्टोरेज भर सकता है।</p>
 </section>
 </main>
@@ -136,7 +147,12 @@ body.printing #printSheet{display:block!important;background:#fff;color:#17251e;
 <label>हस्ताक्षरकर्ता का पद</label><select id="certSign"><option>Director</option><option>Chairman</option></select>
 <div class="grid" style="margin-top:10px"><button onclick="generateCertificate()">प्रमाणपत्र दिखाएं</button><button class="secondary" onclick="closeModal('certModal')">बंद करें</button></div>
 </div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL='https://paqyodrcaodxyjuxeoln.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBhcXlvZHJjYW9keHlqdXhlb2xuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwMzQ3NzIsImV4cCI6MjEwODYxMDc3Mn0.cE7M49xWX-sNFQt9MVASMD0x2d3fFtcn-wKq9FMY6Yw';
+const cloudClient=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+let cloudUser=null,cloudSaveTimer=null,cloudReady=false;
 const STORAGE_KEY='smf_recordbook_v3';
 const OLD_STORAGE_KEY='smf_recordbook_v2';
 const defaultRegs=[
@@ -156,7 +172,7 @@ function saveLogo(ev){const f=ev.target.files&&ev.target.files[0];if(!f)return;i
 function loadData(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY));if(Array.isArray(x)&&x.length)return normalizeRegs(x);const old=JSON.parse(localStorage.getItem(OLD_STORAGE_KEY));if(Array.isArray(old)&&old.length){const migrated=normalizeRegs(old);localStorage.setItem(STORAGE_KEY,JSON.stringify(migrated));return migrated;}}catch(e){}return structuredCloneSafe(defaultRegs)}
 function normalizeRegs(input){return input.filter(r=>r&&typeof r.id==='string'&&typeof r.name==='string'&&Array.isArray(r.cols)&&Array.isArray(r.data)).map(r=>({...r,cols:r.cols.map(String),data:r.data.map(row=>Array.isArray(row)?row:[])}));}
 function structuredCloneSafe(x){return JSON.parse(JSON.stringify(x))}
-function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(regs));render();setStatus('रिकॉर्ड इस मोबाइल/ब्राउज़र में सेव हो गया।');}catch(e){alert('स्टोरेज भर गया या उपलब्ध नहीं है। पहले बैकअप डाउनलोड करें; बड़ी फोटो/PDF हटाएँ या छोटी फाइल चुनें।');setStatus('सेव नहीं हुआ: ब्राउज़र स्टोरेज भर गया।')}}
+function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(regs));render();setStatus(cloudUser?'रिकॉर्ड मोबाइल और क्लाउड में सेव हो रहा है…':'रिकॉर्ड इस ब्राउज़र में सेव हुआ। क्लाउड सिंक के लिए लॉगिन करें।');if(cloudUser)scheduleCloudSave();}catch(e){alert('स्टोरेज भर गया या उपलब्ध नहीं है। पहले बैकअप डाउनलोड करें; बड़ी फोटो/PDF हटाएँ या छोटी फाइल चुनें।');setStatus('सेव नहीं हुआ: ब्राउज़र स्टोरेज भर गया।')}}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function money(v){const n=Number(String(v||'0').replace(/[,₹\s]/g,''));return Number.isFinite(n)?n:0}
 function render(){
@@ -221,7 +237,17 @@ async function installApp(){if(deferredInstallPrompt){deferredInstallPrompt.prom
 function showInstallHelp(){alert('इंस्टॉल करने के लिए: पहले इस ऐप को GitHub Pages जैसी HTTPS वेबसाइट पर खोलें। Chrome में ऊपर ⋮ मेन्यू दबाएँ और “Install app” या “Add to Home screen” चुनें। यदि विकल्प नहीं दिखता, पेज रिफ्रेश करें और कुछ देर बाद दोबारा देखें।')}
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').then(()=>setStatus('ऐप ऑफलाइन उपयोग के लिए तैयार है।')).catch(()=>setStatus('ऐप खुल गया है; ऑफलाइन कैश सेट नहीं हो सका।')))}
 
-render();loadLogo();setStatus('रिकॉर्ड इसी मोबाइल/ब्राउज़र में सेव होते हैं। सुरक्षित रखने के लिए बैकअप डाउनलोड करें।');
+
+function cloudMessage(msg){const el=document.getElementById('cloudStatus');if(el)el.textContent=msg;}
+function showCloudUser(){document.getElementById('cloudSignedOut').classList.toggle('hidden',!!cloudUser);document.getElementById('cloudSignedIn').classList.toggle('hidden',!cloudUser);document.getElementById('cloudUserLabel').textContent=cloudUser?'लॉगिन: '+cloudUser.email:'';}
+function scheduleCloudSave(){if(!cloudClient||!cloudUser)return;clearTimeout(cloudSaveTimer);cloudSaveTimer=setTimeout(saveCloudNow,900);}
+async function saveCloudNow(){if(!cloudClient||!cloudUser)return;try{const {error}=await cloudClient.from('smf_recordbook_cloud').upsert({owner_id:cloudUser.id,record_data:regs,updated_at:new Date().toISOString()},{onConflict:'owner_id'});if(error)throw error;cloudMessage('☁️ क्लाउड सिंक पूरा हुआ।');}catch(e){cloudMessage('क्लाउड सेव नहीं हुआ: '+(e.message||'टेबल/RLS सेटिंग जाँचें।'));}}
+async function loadCloudForUser(user){cloudUser=user;showCloudUser();cloudMessage('क्लाउड रिकॉर्ड लोड हो रहे हैं…');try{const {data,error}=await cloudClient.from('smf_recordbook_cloud').select('record_data').eq('owner_id',user.id).maybeSingle();if(error)throw error;if(data&&Array.isArray(data.record_data)){regs=normalizeRegs(data.record_data);localStorage.setItem(STORAGE_KEY,JSON.stringify(regs));render();cloudMessage('☁️ क्लाउड रिकॉर्ड लोड हो गए।');}else{await saveCloudNow();cloudMessage('☁️ इस अकाउंट के लिए क्लाउड रिकॉर्ड तैयार हैं।');}}catch(e){cloudMessage('क्लाउड लोड नहीं हुआ: '+(e.message||'SQL टेबल/RLS जाँचें।'));}}
+async function cloudLogin(){if(!cloudClient){cloudMessage('क्लाउड लाइब्रेरी लोड नहीं हुई। इंटरनेट चालू करके पेज रिफ्रेश करें।');return;}const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;if(!email||!password){cloudMessage('ईमेल और पासवर्ड भरें।');return;}cloudMessage('लॉगिन हो रहा है…');const {data,error}=await cloudClient.auth.signInWithPassword({email,password});if(error){cloudMessage('लॉगिन नहीं हुआ: '+error.message);return;}await loadCloudForUser(data.user);}
+async function cloudSignup(){if(!cloudClient){cloudMessage('क्लाउड लाइब्रेरी लोड नहीं हुई।');return;}const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;if(!email||password.length<8){cloudMessage('ईमेल भरें और कम-से-कम 8 अक्षर का पासवर्ड रखें।');return;}cloudMessage('अकाउंट बनाया जा रहा है…');const {data,error}=await cloudClient.auth.signUp({email,password});if(error){cloudMessage('अकाउंट नहीं बना: '+error.message);return;}if(data.session&&data.user){await loadCloudForUser(data.user);}else{cloudMessage('अकाउंट अनुरोध भेज दिया गया। ईमेल पर पुष्टि लिंक आए तो पुष्टि करके लॉगिन करें।');}}
+async function cloudLogout(){if(!cloudClient)return;await cloudClient.auth.signOut();cloudUser=null;showCloudUser();cloudMessage('लॉगआउट हो गया। इस ब्राउज़र का स्थानीय बैकअप बना रहेगा।');}
+async function initCloud(){if(!cloudClient){cloudMessage('क्लाउड लाइब्रेरी लोड नहीं हुई। इंटरनेट जाँचें।');return;}const {data,error}=await cloudClient.auth.getSession();if(error){cloudMessage(error.message);return;}if(data.session?.user)await loadCloudForUser(data.session.user);else{showCloudUser();cloudMessage('लॉगिन करें। अभी रिकॉर्ड केवल इस ब्राउज़र में सेव होंगे।');}}
+render();loadLogo();setStatus('रिकॉर्ड इसी मोबाइल/ब्राउज़र में सेव होते हैं। सुरक्षित रखने के लिए बैकअप डाउनलोड करें।');initCloud();
 </script>
 </body>
 </html>
