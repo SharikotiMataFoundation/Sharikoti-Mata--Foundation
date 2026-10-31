@@ -65,3 +65,6 @@ begin
       using (owner_id = auth.uid());
   end if;
 end $$;
+
+-- Refresh the API schema cache so the app can see the new table.
+notify pgrst, 'reload schema';
