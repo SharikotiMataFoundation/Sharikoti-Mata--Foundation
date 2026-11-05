@@ -235,7 +235,7 @@ window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();def
 window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;setStatus('ऐप मोबाइल में इंस्टॉल हो गया।')});
 async function installApp(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();const result=await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;setStatus(result.outcome==='accepted'?'इंस्टॉल स्वीकार किया गया।':'इंस्टॉल अभी नहीं किया गया।');return}showInstallHelp()}
 function showInstallHelp(){alert('इंस्टॉल करने के लिए: पहले इस ऐप को GitHub Pages जैसी HTTPS वेबसाइट पर खोलें। Chrome में ऊपर ⋮ मेन्यू दबाएँ और “Install app” या “Add to Home screen” चुनें। यदि विकल्प नहीं दिखता, पेज रिफ्रेश करें और कुछ देर बाद दोबारा देखें।')}
-if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').then(()=>setStatus('ऐप ऑफलाइन उपयोग के लिए तैयार है।')).catch(()=>setStatus('ऐप खुल गया है; ऑफलाइन कैश सेट नहीं हो सका।')))}
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').then(()=>setStatus('ऑनलाइन RecordBook तैयार है। क्लाउड सिंक की स्थिति ऊपर देखें।')).catch(()=>setStatus('ऑनलाइन RecordBook तैयार है। क्लाउड सिंक के लिए इंटरनेट जाँचें।')))}
 
 
 function cloudMessage(msg){const el=document.getElementById('cloudStatus');if(el)el.textContent=msg;}
