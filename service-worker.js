@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smf-recordbook-pwa-v4';
+const CACHE_NAME = 'smf-recordbook-pwa-v5';
 const APP_SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
@@ -12,6 +12,19 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   // Only cache this app's own files. Never intercept Supabase/API/CDN traffic.
   if (url.origin !== self.location.origin) return;
+  // Always check the network first for page navigations so mobile users receive the latest online app.
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request).then(response => {
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put('./index.html', copy));
+        }
+        return response;
+      }).catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
   event.respondWith(
     caches.match(request).then(cached => cached || fetch(request).then(response => {
       if (response && response.ok) {
